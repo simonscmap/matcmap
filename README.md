@@ -1,6 +1,6 @@
 ![Cover](pic/CMAP.png)
 
-# mcmap
+# matcmap
 
 matcmap is the MATLAB client for Simons CMAP project. It provides access to the Simons CMAP database where various ocean data sets are hosted. These data sets include multi decades of remote sensing observations (satellite), numerical model estimates, and field expeditions.
 
