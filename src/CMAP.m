@@ -262,6 +262,19 @@ classdef CMAP
         end
         
         
+        function datasetID = get_dataset_ID(tableName)
+            % Returns dataset ID.
+            %
+            % Example
+            %
+            % CMAP.get_dataset_ID('tblHOT_LAVA')
+            %
+            % See also get_catalog, get_dataset
+
+            datasetID = CMAP.query(sprintf('SELECT DISTINCT(Dataset_ID) FROM dbo.udfCatalog() WHERE LOWER(Table_Name)=LOWER(''%s'') ', tableName)).Dataset_ID;
+        end
+        
+        
         function tbl = get_dataset(tableName)
             % Returns the entire dataset.
             % It is not recommended to retrieve datasets with more than 100k rows using this method.
@@ -275,8 +288,9 @@ classdef CMAP
             %
             % See also datasets, get_dataset_metadata                       
             
+            datasetID = CMAP.get_dataset_ID(tableName);
             maxRow = 2000000;
-            df = CMAP.query(sprintf('SELECT JSON_stats FROM tblDataset_Stats WHERE Dataset_Name=''%s'' ', tableName));
+            df = CMAP.query(sprintf('SELECT JSON_stats FROM tblDataset_Stats WHERE Dataset_ID=%d ', datasetID));
             js = jsondecode(char(df.JSON_stats(1)));
             rows = js.lat.count;
             if isempty(rows)
